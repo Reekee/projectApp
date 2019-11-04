@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { LoadingController, AlertController, ToastController } from '@ionic/angular';
+import { LoadingController, AlertController, ToastController, Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,7 @@ import { Storage } from '@ionic/storage';
 export class SessionService {
     public status = false;  // ตัวแปรควบคุมการล็อกอิน  // true : ล็อกอินแล้ว , false: ยังไม่ล็อกอิน
     public user: any = {};
-    public api = "http://192.168.1.35/projectAppApi/";     // ตัวแปรสำหรับชี้ที่ตั้งของ Api
+    public api = "http://localhost/projectAppApi/";     // ตัวแปรสำหรับชี้ที่ตั้งของ Api
     public apiTimeout: number = 5000;
     constructor(
         private http: HttpClient,
@@ -18,6 +19,8 @@ export class SessionService {
         private alertCtrl: AlertController,
         private toastController: ToastController,
         private storage: Storage,
+        private platform: Platform,
+        private oneSignal: OneSignal,
     ) { }
     public async ajax(url, data, isloading) {   // method สำหรับการเชือมต่อเรียก Api Service
         let loading: any;
@@ -116,5 +119,22 @@ export class SessionService {
     }
     public removeStorage(key) {     // method สำหรับลบข้อมูล Storage
         return this.storage.remove(key);
+    }
+    public setupPush() {
+        if (this.platform.is('cordova')) {
+            this.oneSignal.startInit('28beb7a0-96b8-416d-8ed9-01e25e43a715', '169711519927');
+            this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+            this.oneSignal.handleNotificationReceived().subscribe((jsonData) => {
+                let msg = "handleNotificationReceived<br>" + JSON.stringify(jsonData);
+                this.showAlert(msg);
+            });
+            this.oneSignal.handleNotificationOpened().subscribe((jsonData) => {
+                let msg = "handleNotificationOpened<br>" + JSON.stringify(jsonData);
+                this.showAlert(msg);
+            });
+            this.oneSignal.endInit();
+        } else {
+            this.showAlert('ไม่รองรับ push บนบราวเซอร์');
+        }
     }
 }

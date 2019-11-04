@@ -24,35 +24,34 @@ export class AppComponent {
         this.initializeApp();
     }
     initializeApp() {
-        this.platform.ready().then(() => {
+        this.platform.ready().then(async () => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
-            this.run();
+
+            this.router.navigateByUrl('/', { replaceUrl: true });
+            let api = await this.session.getStorage("api");
+            if (api) this.session.api = api;
+            this.session.ajax(this.session.api + 'check-project-api.php', {}, false).then(async (res: any) => {
+                if (res.status) {
+                    await this.session.setStorage("api", this.session.api);
+                    this.run();
+                } else {
+                    this.router.navigateByUrl('/set-api', { replaceUrl: true });
+                }
+            }).catch(error => {
+                this.router.navigateByUrl('/set-api', { replaceUrl: true });
+            });
         });
     }
     async run() {
-        this.setupPush();
         this.session.status = await this.session.getStorage('project-status') || false;
         this.session.user = await this.session.getStorage('project-user') || {};
         if (this.session.status == false) {
             this.router.navigateByUrl('/login', { replaceUrl: true });
-        }
-    }
-    setupPush() {
-        if (this.platform.is('cordova')) {
-            this.oneSignal.startInit('28beb7a0-96b8-416d-8ed9-01e25e43a715', '169711519927');
-            this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
-            this.oneSignal.handleNotificationReceived().subscribe((jsonData) => {
-                let msg = "handleNotificationReceived<br>" + JSON.stringify(jsonData);
-                this.session.showAlert(msg);
-            });
-            this.oneSignal.handleNotificationOpened().subscribe((jsonData) => {
-                let msg = "handleNotificationOpened<br>" + JSON.stringify(jsonData);
-                this.session.showAlert(msg);
-            });
-            this.oneSignal.endInit();
         } else {
-            this.session.showAlert('ไม่รองรับ push บนบราวเซอร์');
+            this.session.setupPush();
+            this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
         }
     }
+
 }
