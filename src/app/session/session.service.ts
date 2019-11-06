@@ -132,6 +132,13 @@ export class SessionService {
                 let msg = "handleNotificationOpened<br>" + JSON.stringify(jsonData);
                 this.showAlert(msg);
             });
+            this.oneSignal.getIds().then((ids) => {
+                alert(ids.userId);
+                // this.ajax("", {
+                //     user_id: this.user.user_id,
+                //     player_id: ids.userId
+                // }, false);
+            });
             this.oneSignal.endInit();
         } else {
             this.showAlert('ไม่รองรับ push บนบราวเซอร์');
