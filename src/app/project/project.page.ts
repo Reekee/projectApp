@@ -69,11 +69,28 @@ export class ProjectPage implements OnInit {
                     text: 'ลบโครงการ',
                     icon: 'trash',
                     handler: () => {
-
+                        this.del(project);
                     }
                 },
             ]
         });
         await actionSheet.present();
+    }
+    del(project) {
+        this.session.showConfirm("คุณแน่ใจต้องการลบโครงการนี้ใช่ไหม ?").then(rs => {
+            if (rs) {
+                this.session.ajax(this.session.api + "project-del.php", {
+                    project_id: project.project_id
+                }, true).then((res: any) => {
+                    if (res.status == true) {
+                        this.loadData();
+                    } else {
+                        this.session.showAlert(res.message);
+                    }
+                }).catch(error => {
+                    this.session.showAlert(error);
+                });
+            }
+        });
     }
 }

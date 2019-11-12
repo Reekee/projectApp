@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-11-04 21:32:43
+Date: 2019-11-13 06:43:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -53,9 +53,10 @@ CREATE TABLE `project` (
 INSERT INTO `project` VALUES ('1', 'ss555', 'ww555', '2019-11-02', '300', 'fileupload/project/1572714336.jpeg', '1', '2019-11-02 18:20:21');
 INSERT INTO `project` VALUES ('2', 'qq', 'ww', '2019-11-03', '300', 'fileupload/project/1572714624.jpeg', '1', '2019-11-02 18:10:26');
 INSERT INTO `project` VALUES ('3', 'q', 'w', '2019-11-03', '6000', 'fileupload/project/1572714761.jpeg', '1', '2019-11-02 18:12:43');
-INSERT INTO `project` VALUES ('4', 'www', 'rrr', '2019-11-03', '30', '', '1', '2019-11-02 18:16:20');
+INSERT INTO `project` VALUES ('4', 'www', 'rrr', '2019-11-03', '30', 'fileupload/project/1572946431.jpeg', '1', '2019-11-05 16:33:56');
 INSERT INTO `project` VALUES ('5', 'aa', 'aa', '2019-11-03', '200', 'fileupload/project/1572715202.jpeg', '1', '2019-11-02 18:20:05');
 INSERT INTO `project` VALUES ('6', '123', '123', '2019-11-04', '123', 'fileupload/project/1572871815.jpeg', '1', '2019-11-04 19:50:34');
+INSERT INTO `project` VALUES ('7', 'aaa', 'sss', '2019-11-05', '100', 'fileupload/project/1572946296.jpeg', '1', '2019-11-05 16:31:44');
 
 -- ----------------------------
 -- Table structure for `user`
