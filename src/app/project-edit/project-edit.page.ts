@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, ActionSheetController, NavController } from '@ionic/angular';
+import { Platform, ActionSheetController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../session/session.service';
 
 @Component({
@@ -16,9 +16,7 @@ export class ProjectEditPage implements OnInit {
         private platform: Platform,
         private camera: Camera,
         private actionSheetController: ActionSheetController,
-        private nav: NavController,
         private route: ActivatedRoute,
-        private router: Router,
         private session: SessionService
     ) { }
     ngOnInit() {
@@ -33,7 +31,7 @@ export class ProjectEditPage implements OnInit {
                 this.project = res.project;
             } else {
                 this.session.showAlert(res.message).then(rs => {
-                    this.nav.pop();
+                    this.session.back();
                 });
             }
         }).catch(error => {
@@ -44,7 +42,7 @@ export class ProjectEditPage implements OnInit {
         this.project.user_id = this.session.user.user_id;
         this.session.ajax(this.session.api + "project-edit.php", this.project, true).then((res: any) => {
             if (res.status == true) {
-                this.router.navigateByUrl('/tabs/project');
+                this.session.back();
             } else {
                 this.session.showAlert(res.message);
             }

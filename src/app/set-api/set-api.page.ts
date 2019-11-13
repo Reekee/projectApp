@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../session/session.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-set-api',
@@ -13,7 +12,6 @@ export class SetApiPage implements OnInit {
     name: string = "";
     isConnect: boolean = false;
     constructor(
-        private router: Router,
         private session: SessionService
     ) { }
     ngOnInit() {
@@ -51,10 +49,10 @@ export class SetApiPage implements OnInit {
         this.session.status = await this.session.getStorage('project-status') || false;
         this.session.user = await this.session.getStorage('project-user') || {};
         if (this.session.status == false) {
-            this.router.navigateByUrl('/login', { replaceUrl: true });
+            this.session.linkTo("/login", false);
         } else {
             this.session.setupPush();
-            this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+            this.session.linkTo("/tabs/home", false);
         }
     }
 }

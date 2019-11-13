@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { SessionService } from '../session/session.service';
 
 @Component({
@@ -9,7 +8,6 @@ import { SessionService } from '../session/session.service';
 })
 export class UserPage implements OnInit {
     constructor(
-        private router: Router,
         private session: SessionService
     ) { }
     ngOnInit() {
@@ -21,7 +19,7 @@ export class UserPage implements OnInit {
                 this.session.user = {};
                 this.session.removeStorage('project-status');
                 this.session.removeStorage('project-user');
-                this.router.navigateByUrl('/login', { replaceUrl: true });
+                this.session.linkTo("/login", false);
             }
         });
     }

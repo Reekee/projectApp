@@ -3,7 +3,6 @@ import { SessionService } from '../session/session.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { async } from 'q';
 
 @Component({
     selector: 'app-project',
@@ -45,7 +44,7 @@ export class ProjectPage implements OnInit {
         });
     }
     add() {
-        this.router.navigateByUrl('/project-add');
+        this.session.linkTo("/project-add");
     }
     async open(project) {
         const actionSheet = await this.actionSheetController.create({
@@ -55,14 +54,14 @@ export class ProjectPage implements OnInit {
                     text: 'เปิดดูโครงการ',
                     icon: 'open',
                     handler: () => {
-                        this.router.navigateByUrl('/project-detail/' + project.project_id);
+                        this.session.linkTo('/project-detail/' + project.project_id);
                     }
                 },
                 {
                     text: 'แก้ไขโครงการ',
                     icon: 'create',
                     handler: () => {
-                        this.router.navigateByUrl('/project-edit/' + project.project_id);
+                        this.session.linkTo('/project-edit/' + project.project_id);
                     }
                 },
                 {

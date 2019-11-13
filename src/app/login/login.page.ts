@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { SessionService } from '../session/session.service';
 
 @Component({
@@ -13,7 +12,6 @@ export class LoginPage implements OnInit {
         password: '1234'
     };
     constructor(
-        private router: Router,
         private session: SessionService
     ) { }
     ngOnInit() {
@@ -28,7 +26,7 @@ export class LoginPage implements OnInit {
                 this.session.user = res.user;
                 this.session.setStorage('project-status', true);
                 this.session.setStorage('project-user', res.user);
-                this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+                this.session.linkTo("/tabs/home", false);
             } else {
                 this.session.showAlert(res.message);
             }

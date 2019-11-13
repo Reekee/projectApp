@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../session/session.service';
 
@@ -12,7 +11,6 @@ export class ProjectDetailPage implements OnInit {
     project_id = '';
     project: any = {};
     constructor(
-        private nav: NavController,
         private route: ActivatedRoute,
         private session: SessionService
     ) { }
@@ -28,7 +26,7 @@ export class ProjectDetailPage implements OnInit {
                 this.project = res.project;
             } else {
                 this.session.showAlert(res.message).then(rs => {
-                    this.nav.pop();
+                    this.session.back();
                 });
             }
         }).catch(error => {

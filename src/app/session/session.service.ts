@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { LoadingController, AlertController, ToastController, Platform } from '@ionic/angular';
+import { LoadingController, AlertController, ToastController, Platform, NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +21,8 @@ export class SessionService {
         private toastController: ToastController,
         private storage: Storage,
         private platform: Platform,
+        private router: Router,
+        private nav: NavController,
         private oneSignal: OneSignal,
     ) { }
     public async ajax(url, data, isloading) {   // method สำหรับการเชือมต่อเรียก Api Service
@@ -119,6 +122,16 @@ export class SessionService {
     }
     public removeStorage(key) {     // method สำหรับลบข้อมูล Storage
         return this.storage.remove(key);
+    }
+    public linkTo(page, type = true) { // type=false ไม่จำ/ true=จำ
+        if (type == false) {
+            this.router.navigateByUrl(page, { replaceUrl: true }); // ไม่จำประวัติหน้าก่อนหน้า
+        } else {
+            this.router.navigateByUrl(page);  // จำประวัติหน้าก่อนหน้า
+        }
+    }
+    public back() { // ฟังก์ชันสำหรับถอยไปยังหน้าก่อนหน้า
+        this.nav.pop();
     }
     public setupPush() {
         if (this.platform.is('cordova')) {
